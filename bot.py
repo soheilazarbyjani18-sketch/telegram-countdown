@@ -23,7 +23,7 @@ days_left = (TARGET_DATE - today).days
 if days_left < 0:
     message = "🎯 امروز روز بهترین ورژن خودته!"
 else:
-    message = f"⏳ {days_left} روز تا بهترین ورژن خودت!"
+   message = f"🚀 {days_left} روز دیگه؛ ادامه بده، نسخه جدیدت نزدیکه!"
 
 # -----------------------------
 # ارسال پیام به کانال
