@@ -1,6 +1,7 @@
 import os
 import requests
-from datetime import date
+from datetime import datetime, date
+from zoneinfo import ZoneInfo
 
 # -----------------------------
 # تنظیمات
@@ -9,21 +10,32 @@ from datetime import date
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 CHANNEL_ID = os.environ["CHANNEL_ID"]
 
-# تاریخ هدف: 29 اسفند 1410
-# معادل 19 مارس 2032 در تقویم میلادی
+# 29 اسفند 1410
 TARGET_DATE = date(2032, 3, 19)
+
+# ساعت ایران
+IRAN_TIMEZONE = ZoneInfo("Asia/Tehran")
 
 # -----------------------------
 # محاسبه روزهای باقی‌مانده
 # -----------------------------
 
-today = date.today()
+now = datetime.now(IRAN_TIMEZONE)
+
+# تاریخ فعلی ایران
+today = now.date()
+
+# تعداد روزهای باقی‌مانده
 days_left = (TARGET_DATE - today).days
+
+# -----------------------------
+# متن پیام
+# -----------------------------
 
 if days_left < 0:
     message = "🎯 امروز روز بهترین ورژن خودته!"
 else:
-   message = f"🚀 {days_left} روز دیگه؛ ادامه بده، نسخه جدیدت نزدیکه!"
+    message = f"🚀 {days_left} روز دیگه؛ ادامه بده، نسخه جدیدت نزدیکه!"
 
 # -----------------------------
 # ارسال پیام به کانال
@@ -36,7 +48,8 @@ response = requests.post(
     data={
         "chat_id": CHANNEL_ID,
         "text": message
-    }
+    },
+    timeout=30
 )
 
 response.raise_for_status()
