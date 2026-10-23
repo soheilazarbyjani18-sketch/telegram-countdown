@@ -19,15 +19,17 @@ from datetime import datetime
 today = datetime.now(TEHRAN).date()
 
 # محاسبه روزهای باقی‌مانده
-days_left = (TARGET_DATE - today).days
+if today < START_DATE:
+    print("Countdown has not started yet.")
+    raise SystemExit(0)
 
-if days_left > 0:
-    message = f"⏳ {days_left} روز تا رسیدن به همه ی خواسته هات💪!"
-elif days_left == 0:
+if today == TARGET_DATE:
     message = "🎯 امروز روز بهترین ورژن خودته!"
-else:
+elif today > TARGET_DATE:
     message = "🏆 به تاریخ هدف رسیدی!"
-
+else:
+    days_left = (TARGET_DATE - today).days - 1
+    message = f" {days_left} روز تا رسیدن به همه‌ی خواسته‌هات 💪 "
 url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
 response = requests.post(
