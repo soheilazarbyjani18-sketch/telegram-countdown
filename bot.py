@@ -1,45 +1,32 @@
+
 import os
 import requests
-from datetime import datetime, date
+from datetime import date
 from zoneinfo import ZoneInfo
-
-# -----------------------------
-# تنظیمات
-# -----------------------------
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 CHANNEL_ID = os.environ["CHANNEL_ID"]
 
-# 29 اسفند 1410
-TARGET_DATE = date(2032, 3, 19)
+# تاریخ پایان: 29 اسفند 1413
+TARGET_DATE = date(2035, 3, 20)
 
-# ساعت ایران
-IRAN_TIMEZONE = ZoneInfo("Asia/Tehran")
+# منطقه زمانی تهران
+TEHRAN = ZoneInfo("Asia/Tehran")
 
-# -----------------------------
+# تاریخ امروز در تهران
+today = date.today()
+from datetime import datetime
+today = datetime.now(TEHRAN).date()
+
 # محاسبه روزهای باقی‌مانده
-# -----------------------------
-
-now = datetime.now(IRAN_TIMEZONE)
-
-# تاریخ فعلی ایران
-today = now.date()
-
-# تعداد روزهای باقی‌مانده
 days_left = (TARGET_DATE - today).days
 
-# -----------------------------
-# متن پیام
-# -----------------------------
-
-if days_left < 0:
+if days_left > 0:
+    message = f"⏳ {days_left} روز تا رسیدن به همه ی خواسته هات💪!"
+elif days_left == 0:
     message = "🎯 امروز روز بهترین ورژن خودته!"
 else:
-    message = f"🚀 {days_left} روز دیگه؛ ادامه بده، نسخه جدیدت نزدیکه!"
-
-# -----------------------------
-# ارسال پیام به کانال
-# -----------------------------
+    message = "🏆 به تاریخ هدف رسیدی!"
 
 url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
@@ -53,5 +40,4 @@ response = requests.post(
 )
 
 response.raise_for_status()
-
 print(message)
