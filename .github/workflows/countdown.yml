@@ -1,8 +1,10 @@
+
 name: Telegram Countdown
 
 on:
   schedule:
-    - cron: '30 0 * * *'
+    - cron: '0 4 * * *'
+      timezone: "Asia/Tehran"
   workflow_dispatch:
 
 jobs:
